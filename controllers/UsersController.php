@@ -24,11 +24,11 @@ class UsersController extends Controller
 
 
 
-    public function actionReadUsers($id)
+    public function actionReadUsers()
     {
         // Fetch posts by the specified user (userId)
         $model = Users::find()
-        ->where(['id' => $id])
+        // ->where(['id' => $id])
         ->orderBy(['created_at' => SORT_DESC])
         ->all();
     
@@ -42,6 +42,23 @@ class UsersController extends Controller
         return $this->render('users_info', ['model' => $model]);
     }
     
+    public function actionReadAll()
+    {
+        // Fetch posts by the specified user (userId)
+        $model = Users::find()
+        // ->where(['id' => $id])
+        ->orderBy(['created_at' => SORT_DESC])
+        ->all();
+    
+        // If no posts are found, redirect or show a message
+        if (empty($model)) {
+            Yii::$app->session->setFlash('error', '.');
+            return $this->redirect(['site/index']);  // Redirect to a relevant page if no posts are found
+        }
+    
+        // Render the view for individual user posts
+        return $this->render('users_info_all', ['model' => $model]);
+    }
 
     /*public function actionUpdate($id)
         {
